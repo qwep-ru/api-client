@@ -382,6 +382,15 @@ $app->get('/settings', function (\Slim\Http\Request $request, \Slim\Http\Respons
     ]);
 })->setName('settings');
 
+/**
+ * Updates catcher — catch incoming updates from API QWEP
+ */
+$app->post('/updates', function (\Slim\Http\Request $request, \Slim\Http\Response $response, $args) {
+    file_put_contents(__DIR__ . '/updates.log', PHP_EOL . date("Y-m-d H:i:s") . ' : ' . $request->getBody(), FILE_APPEND);
+
+    return $response->withStatus(200);
+})->setName('updates');
+
 $container = $app->getContainer();
 
 $container['view'] = function ($container) {
