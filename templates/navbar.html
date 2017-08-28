@@ -1,0 +1,29 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">QWEP API Client</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto w-100 justify-content-end">
+            <li class="nav-item {{ title == 'Главная' ? 'active' : '' }}">
+                <a class="nav-link" href="{{ path_for('index') }}">Главная</a>
+            </li>
+            <li class="nav-item {{ title == 'Поставщики' ? 'active' : '' }}">
+                <a class="nav-link" href="{{ path_for('vendors') }}">Поставщики</a>
+            </li>
+            <li class="nav-item {{ title == 'Аккаунты' ? 'active' : '' }}">
+                <a class="nav-link" href="{{ path_for('accounts') }}">Аккаунты</a>
+            </li>
+            <li class="nav-item {{ title == 'Регионы' ? 'active' : '' }}">
+                <a class="nav-link" href="{{ path_for('regions') }}">Регионы</a>
+            </li>
+            <li class="nav-item {{ title == 'Города' ? 'active' : '' }}">
+                <a class="nav-link" href="{{ path_for('cities') }}">Города</a>
+            </li>
+            <li class="nav-item {{ title == 'Настройки' ? 'active' : '' }}">
+                <a class="nav-link" href="{{ path_for('settings') }}">Настройки</a>
+            </li>
+        </ul>
+    </div>
+</nav>
