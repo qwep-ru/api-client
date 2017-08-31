@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+{% include "header.html" %}
+
+<body>
+
+{% include "navbar.html" %}
+
+<div class="container" style="margin-top: 50px;">
+    <div class="row">
+        <div class="col-md-12 mr-auto">
+            <textarea disabled class="form-control" rows="30">{{ results }}</textarea>
+            <br/>
+            <form action="{{ path_for('webhook') }}">
+                <input type="hidden" class="form-control form-control-lg" name="clear" value="true">
+                <button type="submit" class="btn btn-primary btn-lg">Очистить</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% include "footer.html" %}
+
+</body>
+</html>

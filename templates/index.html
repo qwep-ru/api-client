@@ -120,8 +120,6 @@
     </div>
 </div>
 
-{% include "debug.html" %}
-
 {% else %}
 
 <div class="container" style="margin-top: 5rem;">
@@ -134,6 +132,10 @@
     </div>
 </div>
 
+{% endif %}
+
+{% if requests or responses %}
+    {% include "debug.html" %}
 {% endif %}
 
 {% include "footer.html" %}

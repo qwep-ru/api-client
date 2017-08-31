@@ -38,8 +38,10 @@
     </div>
 </div>
 
-{% include "debug.html" %}
+{% endif %}
 
+{% if requests or responses %}
+    {% include "debug.html" %}
 {% endif %}
 
 {% include "footer.html" %}

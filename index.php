@@ -23,7 +23,8 @@ $app->get('/', function (\Slim\Http\Request $request, \Slim\Http\Response $respo
                 'requestData' => [
                     'article' => $request->getParam('input'),
                     'accounts' => [],
-                    'vendors' => []
+                    'vendors' => [],
+                    'type' => $settings['type']
                 ]
             ]
         ];
@@ -142,7 +143,8 @@ $app->get('/', function (\Slim\Http\Request $request, \Slim\Http\Response $respo
         $requestJson = [
             'Request' => [
                 'requestData' => [
-                    'clarification' => $request->getParam('clarification')
+                    'clarification' => $request->getParam('clarification'),
+                    'type' => $settings['type']
                 ]
             ]
         ];
@@ -363,30 +365,59 @@ $app->get('/cities', function (\Slim\Http\Request $request, \Slim\Http\Response 
  * Settings page
  */
 $app->get('/settings', function (\Slim\Http\Request $request, \Slim\Http\Response $response, $args) {
+    $pageParameters = [
+        'title' => 'Настройки',
+        'results' => [],
+        'requests' => [],
+        'responses' => []
+    ];
+
     $settings = json_decode(file_get_contents(__DIR__ . '/settings.json'), true);
 
-    if ($request->getParam('host') || $request->getParam('token') || $request->getParam('accounts') || $request->getParam('vendors')) {
+    $pageParameters['results'] = $settings;
+
+    if ($request->getParam('host') || $request->getParam('token') || $request->getParam('accounts') || $request->getParam('vendors') || $request->getParam('type')) {
         $settings = [
-            'host' => $_GET['host'],
-            'token' => $_GET['token'],
-            'accounts' => explode(',', $_GET['accounts']),
-            'vendors' => explode(',', $_GET['vendors'])
+            'host' => $request->getParam('host'),
+            'token' => $request->getParam('token'),
+            'accounts' => explode(',', $request->getParam('accounts')),
+            'vendors' => explode(',', $request->getParam('vendors')),
+            'type' => $request->getParam('type')
         ];
 
         file_put_contents(__DIR__ . '/settings.json', json_encode($settings));
     }
 
-    return $this->view->render($response, 'settings.html', [
-        'title' => 'Настройки',
-        'settings' => $settings
-    ]);
+    return $this->view->render($response, 'settings.html', $pageParameters);
 })->setName('settings');
+
+/**
+ * Webhook log
+ */
+$app->get('/webhook', function (\Slim\Http\Request $request, \Slim\Http\Response $response, $args) {
+    $pageParameters = [
+        'title' => 'Лог хука',
+        'results' => [],
+        'requests' => [],
+        'responses' => []
+    ];
+
+    if ($request->getParam('clear')) {
+        file_put_contents(__DIR__ . '/updates.log', '');
+    }
+
+    $settings = json_decode(file_get_contents(__DIR__ . '/settings.json'), true);
+
+    $pageParameters['results'] = file_get_contents(__DIR__ . '/updates.log');
+
+    return $this->view->render($response, 'webhook.html', $pageParameters);
+})->setName('webhook');
 
 /**
  * Updates catcher — catch incoming updates from API QWEP
  */
 $app->post('/updates', function (\Slim\Http\Request $request, \Slim\Http\Response $response, $args) {
-    file_put_contents(__DIR__ . '/updates.log', PHP_EOL . date("Y-m-d H:i:s") . ' : ' . $request->getBody(), FILE_APPEND);
+    file_put_contents(__DIR__ . '/updates.log', PHP_EOL . PHP_EOL . PHP_EOL . date("Y-m-d H:i:s") . ' : ' . $request->getBody(), FILE_APPEND);
 
     return $response->withStatus(200);
 })->setName('updates');
