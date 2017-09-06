@@ -41,7 +41,7 @@ $app->get('/', function (\Slim\Http\Request $request, \Slim\Http\Response $respo
 
         $client = new GuzzleHttp\Client();
 
-        $responseFromApi = $client->request('POST', $settings['host'] . '/userapi/search', [
+        $responseFromApi = $client->request('POST', $settings['host'] . '/search', [
             'headers' => ['Authorization' => 'Bearer ' . $settings['token']],
             'body' => $requestJson
         ]);
@@ -78,7 +78,7 @@ $app->get('/', function (\Slim\Http\Request $request, \Slim\Http\Response $respo
 
         $client = new GuzzleHttp\Client();
 
-        $responseFromApi = $client->request('POST', $settings['host'] . '/userapi/search/results', [
+        $responseFromApi = $client->request('POST', $settings['host'] . '/search/results', [
             'headers' => ['Authorization' => 'Bearer ' . $settings['token']],
             'body' => $requestJson
         ]);
@@ -115,7 +115,7 @@ $app->get('/', function (\Slim\Http\Request $request, \Slim\Http\Response $respo
 
         $client = new GuzzleHttp\Client();
 
-        $responseFromApi = $client->request('POST', $settings['host'] . '/userapi/search/updates', [
+        $responseFromApi = $client->request('POST', $settings['host'] . '/search/updates', [
             'headers' => ['Authorization' => 'Bearer ' . $settings['token']],
             'body' => $requestJson
         ]);
@@ -153,7 +153,7 @@ $app->get('/', function (\Slim\Http\Request $request, \Slim\Http\Response $respo
 
         $client = new GuzzleHttp\Client();
 
-        $responseFromApi = $client->request('POST', $settings['host'] . '/userapi/search', [
+        $responseFromApi = $client->request('POST', $settings['host'] . '/search', [
             'headers' => ['Authorization' => 'Bearer ' . $settings['token']],
             'body' => $requestJson
         ]);
@@ -199,7 +199,7 @@ $app->get('/vendors', function (\Slim\Http\Request $request, \Slim\Http\Response
 
     $client = new GuzzleHttp\Client();
 
-    $responseFromApi = $client->request('GET', $settings['host'] . '/userapi/vendors', [
+    $responseFromApi = $client->request('GET', $settings['host'] . '/vendors', [
         'headers' => ['Authorization' => 'Bearer ' . $settings['token']]
     ]);
 
@@ -248,7 +248,7 @@ $app->get('/accounts', function (\Slim\Http\Request $request, \Slim\Http\Respons
 
         $intermediateRequestJson = json_encode($intermediateRequestJson);
 
-        $intermediateResponseFromApi = $client->request('POST', $settings['host'] . '/userapi/accounts/add', [
+        $intermediateResponseFromApi = $client->request('POST', $settings['host'] . '/accounts/add', [
             'headers' => ['Authorization' => 'Bearer ' . $settings['token']],
             'body' => $intermediateRequestJson
         ]);
@@ -270,7 +270,7 @@ $app->get('/accounts', function (\Slim\Http\Request $request, \Slim\Http\Respons
 
         $intermediateRequestJson = json_encode($intermediateRequestJson);
 
-        $intermediateResponseFromApi = $client->request('POST', $settings['host'] . '/userapi/accounts/delete', [
+        $intermediateResponseFromApi = $client->request('POST', $settings['host'] . '/accounts/delete', [
             'headers' => ['Authorization' => 'Bearer ' . $settings['token']],
             'body' => $intermediateRequestJson
         ]);
@@ -281,7 +281,7 @@ $app->get('/accounts', function (\Slim\Http\Request $request, \Slim\Http\Respons
         $pageParameters['responses'][] = json_encode(json_decode($intermediateResponseJson, true), JSON_PRETTY_PRINT);
     }
 
-    $responseFromApi = $client->request('GET', $settings['host'] . '/userapi/accounts/get', [
+    $responseFromApi = $client->request('GET', $settings['host'] . '/accounts/get', [
         'headers' => ['Authorization' => 'Bearer ' . $settings['token']]
     ]);
 
@@ -314,7 +314,7 @@ $app->get('/regions', function (\Slim\Http\Request $request, \Slim\Http\Response
 
     $client = new GuzzleHttp\Client();
 
-    $responseFromApi = $client->request('GET', $settings['host'] . '/userapi/geo/regions', [
+    $responseFromApi = $client->request('GET', $settings['host'] . '/geo/regions', [
         'headers' => ['Authorization' => 'Bearer ' . $settings['token']]
     ]);
 
@@ -347,7 +347,7 @@ $app->get('/cities', function (\Slim\Http\Request $request, \Slim\Http\Response 
 
     $client = new GuzzleHttp\Client();
 
-    $responseFromApi = $client->request('GET', $settings['host'] . '/userapi/geo/cities', [
+    $responseFromApi = $client->request('GET', $settings['host'] . '/geo/cities', [
         'headers' => ['Authorization' => 'Bearer ' . $settings['token']]
     ]);
 

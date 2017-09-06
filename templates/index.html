@@ -65,7 +65,7 @@
                                 <td>{{ clarification.title }}</td>
                                 <td>{{ clarification.article }}</td>
                                 <td>{{ clarification.company }}</td>
-                                <td>{% if clarification.photo != "Array" %}<a href="{{ clarification.photo }}" target="_blank">Показать</a>{% endif %}</td>
+                                <td>{% if clarification.photo %}<a href="{{ clarification.photo }}" target="_blank">Показать</a>{% endif %}</td>
                                 <td><a href="{{ path_for('index') }}?clarification={{ clarification.clarificationId }}" class="btn btn-primary btn-sm">Открыть</a></td>
                             </tr>
                         {% endfor %}
@@ -107,7 +107,7 @@
                                 <td>{{ item.price }}</td>
                                 <td>{{ item.status }}</td>
                                 <td>{{ item.warehouse }}</td>
-                                <td>{% if item.photo != "Array" %}<a href="{{ item.photo }}" target="_blank">Показать</a>{% endif %}</td>
+                                <td>{% if item.photo %}<a href="{{ item.photo }}" target="_blank">Показать</a>{% endif %}</td>
                             </tr>
                         {% endfor %}
                         </tbody>
