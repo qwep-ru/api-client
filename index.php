@@ -2,7 +2,11 @@
 
 require __DIR__ . '/vendor/autoload.php';
 
-$app = new \Slim\App();
+$app = new \Slim\App([
+    'settings' => [
+        'displayErrorDetails' => true
+    ]
+]);
 
 /**
  * Index page
@@ -362,6 +366,108 @@ $app->get('/cities', function (\Slim\Http\Request $request, \Slim\Http\Response 
 })->setName('cities');
 
 /**
+ * Purchases page
+ */
+$app->get('/purchases', function (\Slim\Http\Request $request, \Slim\Http\Response $response, $args) {
+    $pageParameters = [
+        'title' => 'Покупки',
+        'results' => [],
+        'requests' => [],
+        'responses' => []
+    ];
+
+    $settings = json_decode(file_get_contents(__DIR__ . '/settings.json'), true);
+
+    $requestJson = [];
+
+    $requestJson = json_encode($requestJson);
+
+    $client = new GuzzleHttp\Client();
+
+    if ($request->getParam('action') == 'cart-updates') {
+        $responseFromApi = $client->request('GET', $settings['host'] . '/cart/updates', [
+            'headers' => ['Authorization' => 'Bearer ' . $settings['token']],
+            //'body' => $requestJson
+        ]);
+
+        $responseJson = $responseFromApi->getBody()->getContents();
+
+        $pageParameters['results'] = json_decode($responseJson, true)['Response']['entity']['purchases'];
+
+        /**
+         * Fix json below
+         */
+
+        foreach ($pageParameters['results'] as $resultKey => $resultValue) {
+            $pageParameters['results'][$resultKey]['price'] = json_decode($resultValue['price'], true)['Value'];
+            $pageParameters['results'][$resultKey]['quantity'] = json_decode($resultValue['quantity'], true)['Value'];
+        }
+
+        $pageParameters['requests'][] = json_encode(json_decode($requestJson, true), JSON_PRETTY_PRINT);
+        $pageParameters['responses'][] = json_encode(json_decode($responseJson, true), JSON_PRETTY_PRINT);
+    } else {
+        if ($request->getParam('iid') && $request->getParam('quantity')) {
+            $intermediateRequestJson = [
+                'Request' => [
+                    'requestData' => [
+                        'itemId' => $request->getParam('iid'),
+                        'quantity' => $request->getParam('quantity'),
+                        'comment' => $request->getParam('comment') ?: ''
+                    ]
+                ]
+            ];
+
+            $intermediateRequestJson = json_encode($intermediateRequestJson);
+
+            $intermediateResponseFromApi = $client->request('POST', $settings['host'] . '/cart/add/', [
+                'headers' => ['Authorization' => 'Bearer ' . $settings['token']],
+                'body' => $intermediateRequestJson
+            ]);
+
+            $intermediateResponseJson = $intermediateResponseFromApi->getBody()->getContents();
+
+            $pageParameters['requests'][] = json_encode(json_decode($intermediateRequestJson, true), JSON_PRETTY_PRINT);
+            $pageParameters['responses'][] = json_encode(json_decode($intermediateResponseJson, true), JSON_PRETTY_PRINT);
+        }
+
+        $responseFromApi = $client->request('GET', $settings['host'] . '/cart/purchases', [
+            'headers' => ['Authorization' => 'Bearer ' . $settings['token']]
+        ]);
+
+        $responseJson = $responseFromApi->getBody()->getContents();
+
+        $pageParameters['results'] = json_decode($responseJson, true)['Response']['entity']['purchases'];
+
+        $pageParameters['requests'][] = json_encode(json_decode($requestJson, true), JSON_PRETTY_PRINT);
+        $pageParameters['responses'][] = json_encode(json_decode($responseJson, true), JSON_PRETTY_PRINT);
+    }
+
+    return $this->view->render($response, 'purchases.html', $pageParameters);
+})->setName('purchases');
+
+/**
+ * Webhook log
+ */
+$app->get('/webhook', function (\Slim\Http\Request $request, \Slim\Http\Response $response, $args) {
+    $pageParameters = [
+        'title' => 'Лог хука',
+        'results' => [],
+        'requests' => [],
+        'responses' => []
+    ];
+
+    if ($request->getParam('clear')) {
+        file_put_contents(__DIR__ . '/updates.log', '');
+    }
+
+    $settings = json_decode(file_get_contents(__DIR__ . '/settings.json'), true);
+
+    $pageParameters['results'] = file_get_contents(__DIR__ . '/updates.log');
+
+    return $this->view->render($response, 'webhook.html', $pageParameters);
+})->setName('webhook');
+
+/**
  * Settings page
  */
 $app->get('/settings', function (\Slim\Http\Request $request, \Slim\Http\Response $response, $args) {
@@ -390,28 +496,6 @@ $app->get('/settings', function (\Slim\Http\Request $request, \Slim\Http\Respons
 
     return $this->view->render($response, 'settings.html', $pageParameters);
 })->setName('settings');
-
-/**
- * Webhook log
- */
-$app->get('/webhook', function (\Slim\Http\Request $request, \Slim\Http\Response $response, $args) {
-    $pageParameters = [
-        'title' => 'Лог хука',
-        'results' => [],
-        'requests' => [],
-        'responses' => []
-    ];
-
-    if ($request->getParam('clear')) {
-        file_put_contents(__DIR__ . '/updates.log', '');
-    }
-
-    $settings = json_decode(file_get_contents(__DIR__ . '/settings.json'), true);
-
-    $pageParameters['results'] = file_get_contents(__DIR__ . '/updates.log');
-
-    return $this->view->render($response, 'webhook.html', $pageParameters);
-})->setName('webhook');
 
 /**
  * Updates catcher — catch incoming updates from API QWEP
