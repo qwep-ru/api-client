@@ -12,20 +12,22 @@
         <div class="col-md-5 ml-auto mr-auto">
             <form action="{{ path_for('settings') }}">
                 <div class="form-group">
-                    <input type="text" class="form-control form-control-lg" name="host" placeholder="Хост" value="{{ results.host }}">
+                    host: <input type="text" class="form-control form-control-lg" name="host" placeholder="Хост" value="{{ results.host }}">
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control form-control-lg" name="token" placeholder="Токен" value="{{ results.token }}">
+                    token: <input type="text" class="form-control form-control-lg" name="token" placeholder="Токен" value="{{ results.token }}">
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control form-control-lg" name="accounts" placeholder="Аккаунты, через запятую" value="{{ results.accounts | join(',') }}">
+                    accounts: <input type="text" class="form-control form-control-lg" name="accounts" placeholder="Аккаунты, через запятую" value="{{ results.accounts | join(',') }}">
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control form-control-lg" name="vendors" placeholder="Поставщики, через запятую" value="{{ results.vendors | join(',') }}">
+                    vendors: <input type="text" class="form-control form-control-lg" name="vendors" placeholder="Поставщики, через запятую" value="{{ results.vendors | join(',') }}">
                 </div>
-                <div class="form-group">
-                    <input type="text" class="form-control form-control-lg" name="type" placeholder="Способ ответа" value="{{ results.type }}">
-                </div>
+                <!--<div class="form-group">-->
+                    <!--type: <input type="text" class="form-control form-control-lg" name="type" placeholder="Способ ответа" value="{{ results.type }}"><br/>-->
+                    <!--0 - синхронный-->
+                    <!--1 - асинхронный-->
+                <!--</div>-->
                 <input type="hidden" class="form-control form-control-lg" name="druz" value="true">
                 <button type="submit" class="btn btn-primary btn-lg">Сохранить</button>
             </form>

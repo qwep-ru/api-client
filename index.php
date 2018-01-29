@@ -54,18 +54,6 @@ $app->get('/', function (\Slim\Http\Request $request, \Slim\Http\Response $respo
 
         $pageParameters['results'] = json_decode($responseJson, true)['Response']['entity']['results'];
 
-        /**
-         * Fix json below
-         */
-
-        foreach ($pageParameters['results'] as $resultKey => $resultValue) {
-            foreach ($resultValue['items'] as $itemKey => $itemValue) {
-                $pageParameters['results'][$resultKey]['items'][$itemKey]['price'] = json_decode($itemValue['price'],
-                    true)['Value'];
-                $pageParameters['results'][$resultKey]['items'][$itemKey]['quantity'] = json_decode($itemValue['quantity'],
-                    true)['Value'];
-            }
-        }
 
         $pageParameters['requests'][] = json_encode(json_decode($requestJson, true), JSON_PRETTY_PRINT);
         $pageParameters['responses'][] = json_encode(json_decode($responseJson, true), JSON_PRETTY_PRINT);
@@ -91,18 +79,7 @@ $app->get('/', function (\Slim\Http\Request $request, \Slim\Http\Response $respo
 
         $pageParameters['results'] = json_decode($responseJson, true)['Response']['entity']['results'];
 
-        /**
-         * Fix json below
-         */
 
-        foreach ($pageParameters['results'] as $resultKey => $resultValue) {
-            foreach ($resultValue['items'] as $itemKey => $itemValue) {
-                $pageParameters['results'][$resultKey]['items'][$itemKey]['price'] = json_decode($itemValue['price'],
-                    true)['Value'];
-                $pageParameters['results'][$resultKey]['items'][$itemKey]['quantity'] = json_decode($itemValue['quantity'],
-                    true)['Value'];
-            }
-        }
 
         $pageParameters['requests'][] = json_encode(json_decode($requestJson, true), JSON_PRETTY_PRINT);
         $pageParameters['responses'][] = json_encode(json_decode($responseJson, true), JSON_PRETTY_PRINT);
@@ -128,18 +105,6 @@ $app->get('/', function (\Slim\Http\Request $request, \Slim\Http\Response $respo
 
         $pageParameters['results'] = json_decode($responseJson, true)['Response']['entity']['results'];
 
-        /**
-         * Fix json below
-         */
-
-        foreach ($pageParameters['results'] as $resultKey => $resultValue) {
-            foreach ($resultValue['items'] as $itemKey => $itemValue) {
-                $pageParameters['results'][$resultKey]['items'][$itemKey]['price'] = json_decode($itemValue['price'],
-                    true)['Value'];
-                $pageParameters['results'][$resultKey]['items'][$itemKey]['quantity'] = json_decode($itemValue['quantity'],
-                    true)['Value'];
-            }
-        }
 
         $pageParameters['requests'][] = json_encode(json_decode($requestJson, true), JSON_PRETTY_PRINT);
         $pageParameters['responses'][] = json_encode(json_decode($responseJson, true), JSON_PRETTY_PRINT);
@@ -147,7 +112,7 @@ $app->get('/', function (\Slim\Http\Request $request, \Slim\Http\Response $respo
         $requestJson = [
             'Request' => [
                 'requestData' => [
-                    'clarification' => $request->getParam('clarification'),
+                    'clarificationId' => $request->getParam('clarification'),
                     'type' => $settings['type']
                 ]
             ]
@@ -166,20 +131,11 @@ $app->get('/', function (\Slim\Http\Request $request, \Slim\Http\Response $respo
 
         $pageParameters['results'] = json_decode($responseJson, true)['Response']['entity']['results'];
 
-        /**
-         * Fix json below
-         */
-
-        foreach ($pageParameters['results'] as $resultKey => $resultValue) {
-            foreach ($resultValue['items'] as $itemKey => $itemValue) {
-                $pageParameters['results'][$resultKey]['items'][$itemKey]['price'] = json_decode($itemValue['price'], true)['Value'];
-                $pageParameters['results'][$resultKey]['items'][$itemKey]['quantity'] = json_decode($itemValue['quantity'], true)['Value'];
-            }
-        }
 
         $pageParameters['requests'][] = json_encode(json_decode($requestJson, true), JSON_PRETTY_PRINT);
         $pageParameters['responses'][] = json_encode(json_decode($responseJson, true), JSON_PRETTY_PRINT);
     }
+
 
     return $this->view->render($response, 'index.html', $pageParameters);
 })->setName('index');
@@ -394,14 +350,7 @@ $app->get('/purchases', function (\Slim\Http\Request $request, \Slim\Http\Respon
 
         $pageParameters['results'] = json_decode($responseJson, true)['Response']['entity']['purchases'];
 
-        /**
-         * Fix json below
-         */
 
-        foreach ($pageParameters['results'] as $resultKey => $resultValue) {
-            $pageParameters['results'][$resultKey]['price'] = json_decode($resultValue['price'], true)['Value'];
-            $pageParameters['results'][$resultKey]['quantity'] = json_decode($resultValue['quantity'], true)['Value'];
-        }
 
         $pageParameters['requests'][] = json_encode(json_decode($requestJson, true), JSON_PRETTY_PRINT);
         $pageParameters['responses'][] = json_encode(json_decode($responseJson, true), JSON_PRETTY_PRINT);

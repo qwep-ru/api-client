@@ -61,19 +61,22 @@
                         {% for clarification in result.clarifications %}
                             <tr>
                                 <th scope="row">{{ loop.index }}</th>
-                                <td>{{ clarification.vendorTitle }}</td>
+                                <td>{{ result.vendorTitle }}</td>
                                 <td>{{ clarification.title }}</td>
                                 <td>{{ clarification.article }}</td>
-                                <td>{{ clarification.company }}</td>
+                                <td>{{ clarification.brand }}</td>
                                 <td>{% if clarification.photo %}<a href="{{ clarification.photo }}" target="_blank">Показать</a>{% endif %}</td>
                                 <td><a href="{{ path_for('index') }}?clarification={{ clarification.clarificationId }}" class="btn btn-primary btn-sm">Открыть</a></td>
                             </tr>
                         {% endfor %}
                         </tbody>
                     </table>
+                {% else %}
+                    <i>Нет уточнений</i>
                 {% endif %}
 
                 <br/>
+
 
                 {% if result.items %}
                     <h4 class="text-center">Результаты</h4>
@@ -99,12 +102,12 @@
                         {% for item in result.items %}
                             <tr>
                                 <th scope="row">{{ loop.index }}</th>
-                                <td>{{ item.vendorTitle }}</td>
+                                <td>{{ result.vendorTitle }}</td>
                                 <td>{{ item.title }}</td>
                                 <td>{{ item.article }}</td>
-                                <td>{{ item.company }}</td>
-                                <td>{{ item.quantity }}</td>
-                                <td>{{ item.price }}</td>
+                                <td>{{ item.brand }}</td>
+                                <td>{{ item.quantity.formatted }}</td>
+                                <td>{{ item.price.formatted }}</td>
                                 <td>{{ item.status }}</td>
                                 <td>{{ item.warehouse }}</td>
                                 <td>{% if item.photo %}<a href="{{ item.photo }}" target="_blank">Показать</a>{% endif %}</td>
@@ -112,7 +115,8 @@
                         {% endfor %}
                         </tbody>
                     </table>
-
+                {% else %}
+                    <i>Нет результатов</i>
                 {% endif %}
 
             {% endfor %}
