@@ -458,7 +458,9 @@ $app->post('/updates', function (\Slim\Http\Request $request, \Slim\Http\Respons
 $container = $app->getContainer();
 
 $container['view'] = function ($container) {
-    $view = new \Slim\Views\Twig(__DIR__ . '/templates', []);
+    $view = new \Slim\Views\Twig(__DIR__ . '/templates', [
+        'debug' => true
+    ]);
 
     $basePath = rtrim(str_ireplace('index.php', '', $container['request']->getUri()->getBasePath()), '/');
     $view->addExtension(new Slim\Views\TwigExtension($container['router'], $basePath));
