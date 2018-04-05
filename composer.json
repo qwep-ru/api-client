@@ -4,7 +4,7 @@
 	"homepage": "http://qwep.ru/",
 	"require": {
 		"slim/slim": "3.0",
-		"slim/twig-view": "2.2.0",
+		"slim/twig-view": "2.1.0",
 		"guzzlehttp/guzzle": "6.3.0"
   }
 }
